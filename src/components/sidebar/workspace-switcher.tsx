@@ -64,9 +64,9 @@ export function WorkspaceSwitcher({}) {
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">
-										{serverData.name}
+										{activeWorkspace}
 									</span>
-									<span className="truncate text-xs">{activeWorkspace}</span>
+									<span className="truncate text-xs">{serverData.name}</span>
 								</div>
 								<ChevronsUpDown className="ml-auto" />
 							</SidebarMenuButton>

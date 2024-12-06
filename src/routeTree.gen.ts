@@ -26,6 +26,9 @@ const publicImport = createFileRoute('/(public)')()
 const privateWorkspaceidIndexLazyImport = createFileRoute(
   '/(private)/$workspace_id/',
 )()
+const privateWorkspaceidPipeliningIndexLazyImport = createFileRoute(
+  '/(private)/$workspace_id/pipelining/',
+)()
 
 // Create/Update Routes
 
@@ -87,6 +90,19 @@ const publicGridLayoutLoginRoute = publicGridLayoutLoginImport
   .lazy(() =>
     import('./routes/(public)/_grid-layout/login.lazy').then((d) => d.Route),
   )
+
+const privateWorkspaceidPipeliningIndexLazyRoute =
+  privateWorkspaceidPipeliningIndexLazyImport
+    .update({
+      id: '/pipelining/',
+      path: '/pipelining/',
+      getParentRoute: () => privateWorkspaceidRoute,
+    } as any)
+    .lazy(() =>
+      import('./routes/(private)/$workspace_id/pipelining/index.lazy').then(
+        (d) => d.Route,
+      ),
+    )
 
 const privateWorkspaceidComponentsIndexRoute =
   privateWorkspaceidComponentsIndexImport
@@ -161,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateWorkspaceidComponentsIndexImport
       parentRoute: typeof privateWorkspaceidImport
     }
+    '/(private)/$workspace_id/pipelining/': {
+      id: '/(private)/$workspace_id/pipelining/'
+      path: '/pipelining'
+      fullPath: '/$workspace_id/pipelining'
+      preLoaderRoute: typeof privateWorkspaceidPipeliningIndexLazyImport
+      parentRoute: typeof privateWorkspaceidImport
+    }
   }
 }
 
@@ -169,12 +192,15 @@ declare module '@tanstack/react-router' {
 interface privateWorkspaceidRouteChildren {
   privateWorkspaceidIndexLazyRoute: typeof privateWorkspaceidIndexLazyRoute
   privateWorkspaceidComponentsIndexRoute: typeof privateWorkspaceidComponentsIndexRoute
+  privateWorkspaceidPipeliningIndexLazyRoute: typeof privateWorkspaceidPipeliningIndexLazyRoute
 }
 
 const privateWorkspaceidRouteChildren: privateWorkspaceidRouteChildren = {
   privateWorkspaceidIndexLazyRoute: privateWorkspaceidIndexLazyRoute,
   privateWorkspaceidComponentsIndexRoute:
     privateWorkspaceidComponentsIndexRoute,
+  privateWorkspaceidPipeliningIndexLazyRoute:
+    privateWorkspaceidPipeliningIndexLazyRoute,
 }
 
 const privateWorkspaceidRouteWithChildren =
@@ -211,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/$workspace_id/': typeof privateWorkspaceidIndexLazyRoute
   '/$workspace_id/components': typeof privateWorkspaceidComponentsIndexRoute
+  '/$workspace_id/pipelining': typeof privateWorkspaceidPipeliningIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -219,6 +246,7 @@ export interface FileRoutesByTo {
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/$workspace_id': typeof privateWorkspaceidIndexLazyRoute
   '/$workspace_id/components': typeof privateWorkspaceidComponentsIndexRoute
+  '/$workspace_id/pipelining': typeof privateWorkspaceidPipeliningIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -231,6 +259,7 @@ export interface FileRoutesById {
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
   '/(private)/$workspace_id/': typeof privateWorkspaceidIndexLazyRoute
   '/(private)/$workspace_id/components/': typeof privateWorkspaceidComponentsIndexRoute
+  '/(private)/$workspace_id/pipelining/': typeof privateWorkspaceidPipeliningIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -242,6 +271,7 @@ export interface FileRouteTypes {
     | '/server-activation'
     | '/$workspace_id/'
     | '/$workspace_id/components'
+    | '/$workspace_id/pipelining'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -249,6 +279,7 @@ export interface FileRouteTypes {
     | '/server-activation'
     | '/$workspace_id'
     | '/$workspace_id/components'
+    | '/$workspace_id/pipelining'
   id:
     | '__root__'
     | '/(private)/$workspace_id'
@@ -259,6 +290,7 @@ export interface FileRouteTypes {
     | '/(public)/_grid-layout/server-activation'
     | '/(private)/$workspace_id/'
     | '/(private)/$workspace_id/components/'
+    | '/(private)/$workspace_id/pipelining/'
   fileRoutesById: FileRoutesById
 }
 
@@ -293,7 +325,8 @@ export const routeTree = rootRoute
       "filePath": "(private)/$workspace_id.tsx",
       "children": [
         "/(private)/$workspace_id/",
-        "/(private)/$workspace_id/components/"
+        "/(private)/$workspace_id/components/",
+        "/(private)/$workspace_id/pipelining/"
       ]
     },
     "/(public)": {
@@ -327,6 +360,10 @@ export const routeTree = rootRoute
     },
     "/(private)/$workspace_id/components/": {
       "filePath": "(private)/$workspace_id/components/index.tsx",
+      "parent": "/(private)/$workspace_id"
+    },
+    "/(private)/$workspace_id/pipelining/": {
+      "filePath": "(private)/$workspace_id/pipelining/index.lazy.tsx",
       "parent": "/(private)/$workspace_id"
     }
   }

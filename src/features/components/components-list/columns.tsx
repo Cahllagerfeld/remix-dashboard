@@ -20,6 +20,7 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 			),
 			cell: ({ row }) => (
 				<Checkbox
+					className="self-center"
 					checked={row.getIsSelected()}
 					onCheckedChange={(value) => row.toggleSelected(!!value)}
 					aria-label="Select row"
